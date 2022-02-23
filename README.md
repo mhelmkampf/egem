@@ -1,11 +1,10 @@
-===========================================================================================
 This repository contains code and data files that were used for the manuscript 
 "A plea for a conservative approach to the report of new species records from eDNA surveys" 
 by Oscar Puebla and Martin Helmkampf (2022)
-===========================================================================================
+
 
 Contents:
-
+```
 .
 ├── README.md
 ├── code
@@ -21,4 +20,4 @@ Contents:
     ├── egem_mtg2_f_gtr.raxml.support   # RAxML best ML tree with BS supports
     └── seqdata_egem.tsv                # input file for meta_egem.R
 
-============================================================================================
+```
