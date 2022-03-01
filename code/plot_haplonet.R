@@ -64,25 +64,25 @@ setHaploNetOptions(pie.inner.segments.color = "gray15")
 
 ### Plot network dolor-coded by species / population
 (gs <- plot(network, 
-            size = attr(network, "freq"), 
+            size = sqrt(attr(network, "freq") * 2), 
             pie = S, 
             bg = fs, 
-            scale.ratio = 20, 
+            scale.ratio = 5, 
             labels = FALSE, 
             show.mutation = 1))
 
 (gp <- plot(network, 
-            size = attr(network, "freq"), 
+            size = sqrt(attr(network, "freq") * 2), 
             pie = P, 
             bg = fp, 
-            scale.ratio = 20, 
+            scale.ratio = 5, 
             labels = FALSE, 
             show.mutation = 1))
 
 
 ### Save to file (currently bugged, save manually as PDF, default settings)
 ggsave(plot = gp,
-       filename = "egem_network_p.pdf",
+       filename = "egem_network_p_v2.pdf",
        width = 6,
        height = 5,
        device = cairo_pdf,

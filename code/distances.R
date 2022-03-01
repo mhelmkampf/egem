@@ -15,19 +15,28 @@ sequences <- read.dna("../egem_mtg2_f.aln", format = "fasta")
 
 
 ### Calculate distance matrix
-dmatrix <- as.matrix(dist.dna(sequences, model = "raw"))
+dmatrix <- dist.dna(sequences, model = "raw", as.matrix = TRUE)
 
 
 ### Calculate mean distance between Gulf and Caribbean clades
 dclades <- dmatrix[!rownames(dmatrix) %in% c("PL17_160floflo", "ENA_gemmtg"),
                     colnames(dmatrix) %in% c("PL17_160floflo", "ENA_gemmtg")]
+
 mean(dclades)
 
 
 ### Calculate mean distance within Caribbean clade
 dcarib <- dmatrix[!rownames(dmatrix) %in% c("PL17_160floflo", "ENA_gemmtg"),
                   !colnames(dmatrix) %in% c("PL17_160floflo", "ENA_gemmtg")]
-mean(dcarib)
+
+dcarib[lower.tri(dcarib, diag = TRUE)] <- NA
+mean(dcarib, na.rm = TRUE)
+
+
+### Min and max
+# dmatrix[lower.tri(dmatrix, diag = TRUE)] <- NA   # replace diagonal, lower half with NA
+# which(dmatrix == min(dmatrix, na.rm = TRUE), arr.ind = TRUE)
+# which(dmatrix == max(dmatrix, na.rm = TRUE), arr.ind = TRUE)
 
 
 ### Check for bias from assemblies by removing them

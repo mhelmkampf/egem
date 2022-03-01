@@ -7,6 +7,7 @@
 library(ggtree)
 library(treeio)
 library(tidyverse)
+library(ggtext)
 
 setwd("/Users/martin/Documents/Projects/2_Other/egem/3_phylo")
 
@@ -61,7 +62,7 @@ tree <- ggtree(tree_data)
                                 gum = "#E3A258",
                                 may = "#7EA7C2",
                                 flo = "#A39CCF"),   # changed from ABA7C4
-                     labels = c("puella", "nigricans", "unicolor", "gemma", "gummigutta", "maya", "floridae")) +
+                     labels = c("*H. puella*", "*H. nigricans*", "*H. unicolor*", "*H. gemma*", "*H. gummigutta*", "*H. maya*", "*H. floridae*")) +
                                 # ungrouped = "gray60")) +
   scale_shape_manual(values = c(bel = 21, 
                                 flo = 24, 
@@ -82,34 +83,34 @@ tree <- ggtree(tree_data)
                     na.value = 0,
                     drop = FALSE) +
   scale_linetype_manual(values = c(whole = 1, broken = 3), guide = "none") +
-  # Add legend
-  guides(color = guide_legend(title = "Species", title.position = "top", nrow = 4, order = 1, override.aes = list(shape = NA, size = 0.6)),
-         shape = guide_legend(title = "Site", title.position = "top", nrow = 5, order = 2),
-         fill  = guide_legend(title = "Support", title.position = "top", nrow = 4),
-         size  = guide_legend(title = "Support", title.position = "top", nrow = 4)) +
+  # Add clade labels
+  # geom_cladelab(node = 180, label = "Caribbean") +
+  # geom_cladelab(node = 54, label = "Gulf of Mexico") +
   # Add scale bar
   geom_treescale(width = 0.001,
                  x = 0, y = 30,
                  offset = -3, fontsize = 3,
                  color = "gray70") +
+  # Add legend
+  guides(color = guide_legend(title = "Species", title.position = "top", nrow = 4, order = 1, override.aes = list(shape = NA, size = 0.6)),
+         shape = guide_legend(title = "Site", title.position = "top", nrow = 5, order = 2),
+         fill  = guide_legend(title = "Support", title.position = "top", nrow = 4),
+         size  = guide_legend(title = "Support", title.position = "top", nrow = 4)) +
   # Set theme
   theme_void() +
   theme(#plot.title = element_text(size = 14, face = "bold", color = "grey20", hjust = 0.02, vjust = -3),
         legend.position = 'bottom', legend.justification='left', legend.title.align = 0,
-        legend.text = element_text(color = "gray20", margin = margin(r = 35, unit = "pt")),   # space between legends
+        legend.text = element_markdown(color = "gray20", margin = margin(r = 30, unit = "pt")),   # space between legends
         legend.title = element_text(color = "gray20"),
         legend.key = element_rect(size = 1, color = "white"))
   # labs(title = "Mitogenome")
 )
 
 
-### Print node numbers and tip labels
-# t_plot <- t_plot + geom_text2(aes(subset=!isTip, label=node), hjust=-.3)
-
-# t_plot <- t_plot + geom_tiplab(size = 1.5, hjust = -0.1) +
-#                  label = str_sub(
-#                  label, -6, -1)),
-#                  size = 3, hjust = -.1)
+### Print tip labels and node numbers
+# (tree <- tree + geom_tiplab(size = 1.5, hjust = -0.3))
+# 
+# (tree <- tree + geom_text2(aes(subset =! isTip, label = node), size = 2.5, hjust = -0.3))
 
 
 ### Turn into ggplot object, position tree and legend
@@ -129,7 +130,7 @@ tree <- ggtree(tree_data)
 
 ### Save to file
 ggsave(plot = gt,
-       filename = "tree_plots/egem_mtg2_f_gtr_v2.pdf",
+       filename = "tree_plots/egem_mtg2_f_gtr_v4.pdf",
        width = 6,
        height = 9,
        device = cairo_pdf,
