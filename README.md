@@ -8,16 +8,16 @@ Contents:
 .
 ├── README.md
 ├── code
-│   ├── distances.R                     # calculate mitochondrial distances
-│   ├── meta_egem.R                     # prepare metadata file for genotyping
-│   ├── plot_haplonet.R                 # plot haplotype network
-│   ├── plot_tree_mtg.R                 # plot phylogenetic tree of mitochondrial genomes
-│   ├── workflow_genotyping_egem.txt    # genotyping pipeline
-│   └── workflow_phylo_egem.txt         # conduct network and phylogenetic analyses
+│   ├── distances.R                         # calculate mitochondrial distances
+│   ├── meta_egem.R                         # prepare metadata file for genotyping
+│   ├── plot_haplonet.R                     # plot haplotype network
+│   ├── plot_tree_mtg.R                     # plot phylogenetic tree of mitochondrial genomes
+│   ├── workflow_genotyping_egem.sh         # genotyping pipeline
+│   └── workflow_phylo_egem.sh              # conduct network and phylogenetic analyses
 └── data
-    ├── egem_12steleo2.fas              # 12S teleo sequences
-    ├── egem_mtg2_f.aln                 # mitochondrial genome alignment
-    ├── egem_mtg2_f_gtr.raxml.support   # RAxML best ML tree with BS supports
-    └── seqdata_egem.tsv                # input file for meta_egem.R
+    ├── egem_12steleo2.fas                  # 12S teleo sequences
+    ├── egem_mtg2_f.aln                     # mitochondrial genome alignment
+    ├── egem_mtg2_f_gtr_500.raxml.support   # RAxML best ML tree with BS supports
+    └── seqdata_egem.tsv                    # input file for meta_egem.R
 
 ```
