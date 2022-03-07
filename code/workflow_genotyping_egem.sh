@@ -22,16 +22,15 @@
 #    |- ref
 #    |- tmp
 
-# Download raw data from ENA to 1_rawdata (124 x 2 files)
+## Download raw data from ENA to 1_rawdata (124 x 2 files)
 
-# Compile metadata file (in 1_rawdata)
+## Compile metadata file (in 1_rawdata)
 for i in *.fastq.gz ; do echo $i $(zcat < $i | head -n 1) ; done
 find *q.gz > ../0_metadata/raw_data.fof
-# See R script: meta_egem.R
-# uses seqdata_egem.tsv (concatenated from seqdata_reseq.tsv and seqdata_deep.tsv) and raw_data.fof
+# Proceed with R script: meta_egem.R, using seqdata_egem.tsv and raw_data.fof
 #> meta_egem.csv
 
-# Extract and index mitogenome from reference assembly (in 2_genotyping/ref):
+## Extract and index mitogenome from reference genome assembly (GenBank accession GCA_900610375.1, in 2_genotyping/ref):
 grep -A 1 '>LG_M' Hpue_genome_unmasked_01.fas > Hpue_LGM_01.fasta
 
 ml hpc-env/8.3 GATK/4.1.9.0-GCCcore-8.3.0-Java-8 SAMtools/1.9-GCC-8.3.0 BWA/0.7.17-GCC-8.3.0
@@ -41,6 +40,7 @@ gatk CreateSequenceDictionary -R Hpue_LGM_01.fasta
 samtools faidx Hpue_LGM_01.fasta
 
 
+### =================================
 ### 1. Convert Fastq to unaligned BAM
 
 #!/bin/bash

@@ -1,5 +1,5 @@
 ### ===========================================================================================
-### R code to plot the 12S teleo haplotype network (Figure 1a) in 
+### R code to plot the 12S teleo haplotype network (Figure 1a) in
 ### "A plea for a conservative approach to the report of new species records from eDNA surveys"
 ### by Oscar Puebla and Martin Helmkampf (2022)
 ### ===========================================================================================
@@ -35,7 +35,7 @@ setwd("/Users/martin/Documents/Projects/2_Other/egem/3_phylo/network")
 
 
 ### Plot basic network
-plot(network, size = attr(network, "freq"), fast = FALSE)   # plot(network, size = sz, fast = FALSE)
+plot(network, size = attr(network, "freq"), fast = FALSE) # plot(network, size = sz, fast = FALSE)
 
 
 ### Define pie segments for species / population
@@ -51,42 +51,50 @@ P <- haploFreq(sequences, fac = pop, haplo = haplotypes)
 ### Set colors and plotting options (workaround)
 fs <- function(n) c("#A39CCF", "#E3A258", "dodgerblue", "#7EA7C2", "gray20", "#E17366", "#CCCCCC")
 
-fp <- function(n) c("#A39CCF",
-                    "#E3A258",
-                    "dodgerblue",
-                    "#7EA7C2", 
-                    "gray25", "gray25", "gray25",
-                    "#E17366", "#E17366", "#E17366",
-                    "#CCCCCC", "#CCCCCC", "#CCCCCC")
+fp <- function(n) {
+  c(
+    "#A39CCF",
+    "#E3A258",
+    "dodgerblue",
+    "#7EA7C2",
+    "gray25", "gray25", "gray25",
+    "#E17366", "#E17366", "#E17366",
+    "#CCCCCC", "#CCCCCC", "#CCCCCC"
+  )
+}
 
 setHaploNetOptions(pie.inner.segments.color = "gray15")
 
 
 ### Plot network dolor-coded by species / population
-(gs <- plot(network, 
-            size = sqrt(attr(network, "freq") * 2), 
-            pie = S, 
-            bg = fs, 
-            scale.ratio = 5, 
-            labels = FALSE, 
-            show.mutation = 1))
+(gs <- plot(network,
+  size = attr(network, "freq"),
+  pie = S,
+  bg = fs,
+  scale.ratio = 20,
+  labels = FALSE,
+  show.mutation = 1
+))
 
-(gp <- plot(network, 
-            size = sqrt(attr(network, "freq") * 2), 
-            pie = P, 
-            bg = fp, 
-            scale.ratio = 5, 
-            labels = FALSE, 
-            show.mutation = 1))
+(gp <- plot(network,
+  size = attr(network, "freq"),
+  pie = P,
+  bg = fp,
+  scale.ratio = 20,
+  labels = FALSE,
+  show.mutation = 1
+))
 
 
 ### Save to file (currently bugged, save manually as PDF, default settings)
-ggsave(plot = gp,
-       filename = "egem_network_p_v2.pdf",
-       width = 6,
-       height = 5,
-       device = cairo_pdf,
-       bg = "transparent")
+ggsave(
+  plot = gp,
+  filename = "egem_network_p_v1.pdf",
+  width = 6,
+  height = 5,
+  device = cairo_pdf,
+  bg = "transparent"
+)
 
 
 ### *** Note ***

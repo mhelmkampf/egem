@@ -13,7 +13,11 @@
 #    |- log
 #    |- raxml
 
+## Download Hypoplectrus gemma mitochondrion, complete genome (GenBank accession FJ848375)
+#> Hgem_mtgenome_FJ848375.fas
 
+
+### ====================================
 ### 1. Extraction of 12S teleo sequences
 
 #!/bin/bash
@@ -63,7 +67,7 @@ bioawk -c fastx '{ print $name, length($seq) }' egem_12steleo2.fas
 
 ### 2. Network analysis of 12S teleo
 
-# Alignment: 126 taxa and 64 sites, 5 patterns, 124 samples identical, 98.4% invariant sites
+# egem_12steleo2.fas: 126 taxa and 64 sites, 5 patterns, 124 samples identical, 98.4% invariant sites
 
 # see plot_haplonet.R
 
@@ -95,8 +99,6 @@ sed -e 's/|/\//g' \
     grep -v "##" > \
     $BASE_DIR/egem_mtg_n.vcf
 
-# 17030 sites
-
 vcf-to-tab < \
     $BASE_DIR/egem_mtg_n.vcf |
     sed -e 's/\.\/\./N\/N/g' -e 's/[ACGTN\*]\/\*/N\/N/g' -e 's/\*\/[ACGTN\*]/N\/N/g' > \
@@ -113,65 +115,48 @@ rm $BASE_DIR/egem_mtg.tab*
 # Confirm sequences are of equal length (aligned)
 bioawk -c fastx '{ print $name, length($seq) }' egem_mtg.fas
 
-
-### 4. Mitogenome phylogeny: phylogenetic reconstruction (without GenBank sequences)
-
-#!/bin/bash
-
-#SBATCH --job-name=4_phylo
-#SBATCH --partition=carl.p
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=24
-#SBATCH --time=3-00:00  # D-HH:MM
-#SBATCH --output=log/4_phylo_%j.out
-#SBATCH --error=log/4_phylo_%j.err
-#SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=martin.helmkampf@leibniz-zmt.de
-
-BASE_DIR=/gss/work/haex1482/2_Other/egem/3_phylo
-
-raxml-ng \
-    --all \
-    --msa $BASE_DIR/egem_mtg.fas \
-    --model GTR+G \
-    --tree pars{20},rand{20} \
-    --bs-trees 100 \
-    --threads 24 \
-    --worker AUTO \
-    --seed 123 \
-    --prefix $BASE_DIR/raxml/egem_mtg_gtr
-
-# Alignment: 124 taxa and 17030 sites, 934 patterns, 0 samples identical, 90.1% invariant sites
-
-# Modeltest-NG:
-java -jar ~/apps/jmodeltest_2.1.10/jModelTest.jar -d egem_mtg.fas -g 4 -i -f -AIC -BIC -a
-#> GTR+I+G (AIC, BIC)
+# 17030 sites
 
 
-### 5(b). Mitogenome phylogeny: phylogenetic reconstruction (with GenBank sequences)
+### 4. Mitogenome phylogeny: Alignment and model test
 
-# from BASE_DIR=/gss/work/haex1482/2_Other/egem/3_phylo except when noted otherwise
-
+# Reverse complement Hgem mitogenome (in 3_phylo)
 ~/apps/seqtk/seqtk seq -r Hgem_mtgenome_FJ848375.fas > Hgem_mtgenome_FJ848375_rc.fas   # from 1_rawdata/1_mt
 
-# Blast to determine offset: Hpue 17159 (end) is Hgem 13485, moved sequence after that to front
+# Blast to determine offset: Hpue 17159 (end) is Hgem 13485, manually moved sequence after that to front
 #> Hgem_mtgenome_FJ848375_rcre.fas
 
 cat egem_mtg.fas ../1_rawdata/1_mt/Hpue_LGM_01.fasta ../1_rawdata/1_mt/Hgem_mtgenome_FJ848375_rcre.fas | \
     sed -e 's/LG_M/Ref_puemtg/g' -e 's/ENA.*/ENA_gemmtg/g' > egem_mtg2.fas
 
+#!/bin/bash
+
+#SBATCH --job-name=4_aln
+#SBATCH --partition=carl.p
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --time=1-00:00  # D-HH:MM
+#SBATCH --output=log/4_aln_%j.out
+#SBATCH --error=log/4_aln_%j.err
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=martin.helmkampf@leibniz-zmt.de
+
 ml hpc-env/8.3
 ml MAFFT/7.475-GCC-8.3.0-with-extensions
+
+BASE_DIR=/gss/work/haex1482/2_Other/egem/3_phylo
 
 mafft --auto egem_mtg2.fas > egem_mtg2_f.aln
 #> FFT-NS-2 (Fast)
 
+java -jar ~/apps/jmodeltest_2.1.10/jModelTest.jar -d egem_mtg2_f.aln -g 4 -i -f -AIC -BIC -a > egem_mtg2_f.mtest
+#> GTR+I+G (AIC, BIC)
+
 # Alignment: 126 taxa and 17174 sites, 1037 patterns, 0 samples identical, 89.8% invariant sites
 
-# 5b
-# ginsi egem_mtg2.fas > egem_mtg2_g.aln
-#> G-INS-i (set to 2 days)
+
+### 5. Mitogenome phylogeny: phylogenetic reconstruction
 
 #!/bin/bash
 
@@ -180,7 +165,7 @@ mafft --auto egem_mtg2.fas > egem_mtg2_f.aln
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=24
-#SBATCH --time=0-03:00  # D-HH:MM
+#SBATCH --time=1-00:00  # D-HH:MM
 #SBATCH --output=log/5_phylo_%j.out
 #SBATCH --error=log/5_phylo_%j.err
 #SBATCH --mail-type=END,FAIL
@@ -192,9 +177,9 @@ raxml-ng \
     --all \
     --msa $BASE_DIR/egem_mtg2_f.aln \
     --model GTR+G \
-    --tree pars{20},rand{20} \
-    --bs-trees 200 \
+    --tree pars{25},rand{25} \
+    --bs-trees 500 \
     --threads 24 \
     --worker AUTO \
     --seed 123 \
-    --prefix $BASE_DIR/raxml/egem_mtg2_f_gtr
+    --prefix $BASE_DIR/raxml/egem_mtg2_f_gtr_500
