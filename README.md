@@ -1,7 +1,7 @@
 __Description__
 
 This repository contains code and data files that were used for the manuscript 
-"*A plea for a conservative approach to the report of new species records from eDNA surveys*" by Oscar Puebla and Martin Helmkampf (submitted 2022)
+"*A plea for a conservative approach to the report of new species records from eDNA surveys*" by Oscar Puebla and Martin Helmkampf (submitted 2022).
 
 
 __Contents__
@@ -17,7 +17,7 @@ __Contents__
 │   └── workflow_phylo_egem.sh              # network and phylogenetic analysis workflow
 └── data
     ├── egem_12steleo2.fas                  # 12S teleo sequences
-    ├── egem_labels.tsv                     # sample labels, input file for prepar_meta.R                        
+    ├── egem_labels.tsv                     # sample labels, input file for prepare_meta.R                        
     ├── egem_mtg2_f.aln                     # mitochondrial genome alignment
     └── egem_mtg2_f_gtr_500.raxml.support   # RAxML best ML tree with bootstrap supports
 ```
