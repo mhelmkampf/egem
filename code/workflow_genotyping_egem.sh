@@ -27,7 +27,7 @@
 ## Compile metadata file (in 1_rawdata)
 for i in *.fastq.gz ; do echo $i $(zcat < $i | head -n 1) ; done
 find *q.gz > ../0_metadata/raw_data.fof
-# Proceed with R script: meta_egem.R, using seqdata_egem.tsv and raw_data.fof
+# Proceed with R script: prepare_meta.R, using egem_labels.tsv and raw_data.fof
 #> meta_egem.csv
 
 ## Extract and index mitogenome from reference genome assembly (GenBank accession GCA_900610375.1, in 2_genotyping/ref):
@@ -62,7 +62,7 @@ ml hpc-env/8.3
 ml GATK/4.1.9.0-GCCcore-8.3.0-Java-8
 
 BASE_DIR=/gss/work/haex1482/2_Other/egem/2_genotyping
-META_FILE=$BASE_DIR/../0_metadata/meta_egem.csv
+META_FILE=$BASE_DIR/../0_metadata/egem_meta.csv
 LINES=$(head $META_FILE -n $SLURM_ARRAY_TASK_ID | tail -n 1)
 IFS=";" read SAMPLE FWD REV LANEF <<< $LINES
 
