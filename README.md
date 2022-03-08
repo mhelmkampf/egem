@@ -1,10 +1,10 @@
-Description
+__Description__
 
 This repository contains code and data files that were used for the manuscript 
-"**A plea for a conservative approach to the report of new species records from eDNA surveys**" by Oscar Puebla and Martin Helmkampf (submitted 2022)
+"*A plea for a conservative approach to the report of new species records from eDNA surveys*" by Oscar Puebla and Martin Helmkampf (submitted 2022)
 
 
-Contents
+__Contents__
 ```
 .
 ├── README.md
