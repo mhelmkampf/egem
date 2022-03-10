@@ -64,7 +64,7 @@ tree <- ggtree(tree_data)
   geom_treescale(
     width = 0.001,
     x = 0, y = 30,
-    offset = -4, fontsize = 3,
+    offset = -3, fontsize = 3,
     color = "gray70"
   ) +
   # Set colors and shapes
@@ -115,6 +115,12 @@ tree <- ggtree(tree_data)
     fill = guide_legend(title = "Support", title.position = "top", nrow = 4),
     size = guide_legend(title = "Support", title.position = "top", nrow = 4)
   ) +
+  # Add asterisks
+  annotate(geom = "text",
+           label = "*", 
+           x = c(tree_data$x[tree_data$label == "ENA_gemmtg"] + 0.0005, tree_data$x[tree_data$label == "Ref_puemtg"] + 0.0005),
+           y = c(0.5, 100.5), color = "gray20"
+    ) +
   # Set theme
   theme_void() +
   theme(
